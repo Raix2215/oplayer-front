@@ -1,6 +1,9 @@
 <template>
   <div class="search-bar-container">
-    <div class="music-analyer-button">
+    <div class="select-button">
+      <SelectButton></SelectButton>
+    </div>
+    <div class="music-analyer-button" v-if="!onlineMusicStore.isOnlineMode">
       <MusicAnalyzer></MusicAnalyzer>
     </div>
     <div class="input-box">
@@ -36,9 +39,12 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 // import gsap from 'gsap';
 import { useSearchBar } from '@/store/SearchBar';
+import {useOnlineMusicStore} from '@/store/OnlineMusicStore'
 import MusicAnalyzer from '@/components/music/MusicAnalyzer.vue'
+import SelectButton from "@/components/music/onlineMusic/SelectButton.vue";
 import { useMusicLibrary } from '@/store/MusicLibrary';
 const searchBarStore = useSearchBar();
+const onlineMusicStore = useOnlineMusicStore();
 const musicLibraryStore = useMusicLibrary();
 const searchInput = ref(null);
 
@@ -109,12 +115,19 @@ const scrollToSelected = () => {
   top: 45px;
   left: 30%;
   width: 100%;
-  height: 200px;
+  height: 150px;
   position: absolute;
   z-index: 10;
-  background-color: rgba(10, 10, 10, 0.95);
+  background-color: rgba(10, 10, 10, 0.80);
   font-family: "Comfortaa-Light", sans-serif;
 
+  .select-button {
+    position: absolute;
+    top: 20px;
+    right: calc(31% + 8%);
+    width: 5%;
+    height: 45px;
+  }
   .music-analyer-button {
     position: absolute;
     top: 20px;
@@ -123,7 +136,7 @@ const scrollToSelected = () => {
   }
 
   .input-box {
-    width: 60%;
+    width: 55%;
     height: 80px;
     display: flex;
     padding-left: 200px;
@@ -174,7 +187,8 @@ const scrollToSelected = () => {
     font-size: 14px;
 
     .result-count {
-      color: #44AADD;
+      // color: #44AADD;
+      color: rgb(255, 200, 0);
     }
 
     .no-results {
